@@ -1,0 +1,355 @@
+TOTAL SLIDES: 29
+
+--- SLIDE 1 ---
+INTERNET VÀ MÔ HÌNH OSI
+
+--- SLIDE 2 ---
+TOC
+01 
+Khái niệm
+02 
+Mô hình OSI và TCP/IP
+03 
+Quá trình truyền và nhận theo mô hình OSI
+04 
+Thiết bị
+
+--- SLIDE 3 ---
+Network là gì?
+
+--- SLIDE 4 ---
+Network
+01
+Là một nhóm các máy tính liên kết với nhau
+02
+Giúp các máy tính trong nhóm gửi/nhận dữ liệu từ nhau
+
+--- SLIDE 5 ---
+Internet là gì?
+
+--- SLIDE 6 ---
+Internet
+01
+Là một nhóm các network liên kết với nhau, cũng có thể nói là “network of network”
+02
+Giúp một máy tính có thể gửi/nhận dữ liệu từ một máy tính khác từ xa, cho dù cả hai máy không cùng 1 mạng network
+03
+Kết nối thông qua cáp, sóng radio và các hạ tầng khác của network
+
+--- SLIDE 7 ---
+CÁCH INTERNET HOẠT ĐỘNG
+01
+Tất cả dữ liệu được gửi qua Internet đều được chuyển đổi thành các xung ánh sáng hoặc điện, còn được gọi là "bit", và sau đó được máy tính nhận xử lý.
+02
+Dây dẫn, cáp và sóng radio truyền tải các bit này với tốc độ ánh sáng.
+03
+Càng nhiều bit có thể truyền qua các dây dẫn và cáp cùng một lúc, Internet hoạt động càng nhanh.
+04
+Có hai khái niệm chính là nền tảng cho cách thức hoạt động của Internet: 
+gói dữ liệu (Packet)
+ và 
+giao thức (Protocol)
+.
+
+--- SLIDE 8 ---
+GÓI DỮ LIỆU
+(PACKET)
+01
+Khi dữ liệu được gửi qua Internet, trước tiên nó được chia thành các gói nhỏ hơn, sau đó được chuyển đổi thành các bit.
+02
+Mỗi gói dữ liệu chứa cả dữ liệu và thông tin về dữ liệu đó. Thông tin về nội dung của gói dữ liệu được gọi là "tiêu đề" và nó nằm ở đầu để máy nhận biết phải làm gì với gói dữ liệu đó.
+03
+Các gói dữ liệu được định tuyến đến đích bởi nhiều thiết bị mạng khác nhau như bộ định tuyến và bộ chuyển mạch.
+04
+Khi các gói dữ liệu đến đích, thiết bị nhận sẽ lắp ráp lại các gói theo thứ tự và sau đó có thể sử dụng hoặc hiển thị dữ liệu.
+
+--- SLIDE 9 ---
+GÓI DỮ LIỆU
+(PACKET)
+Message
+Packets
+Network
+Packets
+Reassembled
+Message
+
+--- SLIDE 10 ---
+GÓI DỮ LIỆU
+(PACKET)
+Mô phỏng đường đi của một gói trong mạng thông thường
+
+--- SLIDE 11 ---
+Giao thức
+(Protocol)
+• Xác định phương thức giao tiếp chung giữa các thiết bị
+Ethernet
+Gửi các gói dữ liệu giữa các thiết bị trên cùng một mạng cục bộ.
+IP (Internet Protocol)
+Định tuyến và chuyển các gói dữ liệu từ mạng này sang mạng khác.
+TCP / UDP
+Đảm bảo truyền tải đúng thứ tự (TCP) hoặc truyền tải tốc độ cao như video trực tuyến (UDP).
+HTTP
+Định dạng và truyền tải dữ liệu tối ưu cho các trang web và ứng dụng.
+* Ngoài các giao thức cơ bản này, còn có các hệ thống giao thức chuyên dụng cho định tuyến, kiểm thử và mã hóa bảo mật thông tin.
+
+--- SLIDE 12 ---
+KIẾN TRÚC
+
+--- SLIDE 13 ---
+Kiến trúc network
+Việc truyền dữ liệu mạng gồm nhiều tác vụ phức tạp:
+Xử lý tín hiệu vật lý & định tuyến
+Kiểm tra lỗi truyền tải
+Hiển thị dữ liệu người dùng
+Để quản lý, quy trình được chia thành các 
+lớp (layers)
+ hoạt động theo giao thức chuẩn, mang lại những ưu điểm vượt trội cho hệ thống.
+1. Giảm độ phức tạp
+Phân chia quy trình truyền dữ liệu thành nhiều phần nhỏ hơn, giúp việc thiết kế và phát triển mạng trở nên dễ dàng quản lý.
+2. Chuẩn hóa quy trình
+Định hình các tiêu chuẩn chung, cho phép các thiết bị từ nhiều nhà sản xuất khác nhau có thể dễ dàng tương thích và kết nối.
+3. Khắc phục sự cố hiệu quả
+Dễ dàng cô lập, kiểm tra và giải quyết các vấn đề kỹ thuật tại từng phân lớp riêng biệt mà không ảnh hưởng tới toàn bộ hệ thống.
+
+--- SLIDE 14 ---
+Mô hình OSI
+1. Application
+(ứng dụng: HTTP, SMTP, DNS)
+2. Presentation
+(mã hóa, nén dữ liệu)
+3. Session
+(quản lý phiên kết nối)
+4. Transport
+(TCP, UDP - vận chuyển end-to-end)
+5. Network
+(IP - định tuyến, địa chỉ logic)
+6. Data Link
+(Ethernet, WiFi - truyền trong 1 mạng)
+7. Physical
+(cáp, sóng radio - tín hiệu vật lý)
+
+--- SLIDE 15 ---
+Application
+Tầng ứng dụng (Layer 7)
+Chức năng chính
+Giao tiếp trực tiếp với người dùng. Nó tạo ra dữ liệu sẽ được gửi đi và hiển thị thông tin nhận được từ các lớp khác trong mô hình mạng.
+Hỗ trợ các giao thức quen thuộc như 
+HTTP
+, 
+HTTPS
+, 
+DNS
+, 
+SMTP
+, và 
+FTP
+.
+Ví dụ về HTTP Request
+GET
+ 
+/index.html
+ 
+HTTP/1.1
+Host:
+ www.example.com
+User-Agent:
+ Mozilla/5.0
+Accept:
+ text/html,application/xhtml+xml
+Accept-Language:
+ vi,en-US;q=0.9
+Connection:
+ keep-alive
+# Dữ liệu yêu cầu trang web
+
+--- SLIDE 16 ---
+Presentation Layer
+Tầng 
+trình bày
+ (Layer 
+6
+)
+Chức năng chính
+Đảm bảo dữ liệu được định dạng, bảo mật và nén sao cho ứng dụng nhận có thể diễn giải chính xác.
+Cách hoạt động thực tế
+1. Định dạng (Formatting)
+Chuyển đổi cấu trúc dữ liệu nội bộ sang định dạng truyền thông chuẩn (JSON, XML).
+2. Mã hóa (Encryption)
+Mã hóa dữ liệu tại đầu gửi và giải mã tại đầu nhận (như SSL/TLS) để bảo mật.
+3. Nén (Compression)
+Thu nhỏ dữ liệu gốc để tiết kiệm băng thông và tối ưu tốc độ truyền tải.
+
+--- SLIDE 17 ---
+Session Layer
+Tầng 
+phiên
+ (Layer 
+5
+)
+Chức năng chính
+Nó đóng vai trò là "trình quản lý hội thoại", điều chỉnh việc mở, đóng và bảo mật các kênh liên lạc giữa hai thiết bị.
+Cách hoạt động thực tế
+1. Thiết lập & Duy trì
+Tạo ra và duy trì kết nối ổn định giữa hai ứng dụng ở hai đầu thiết bị.
+2. Đồng bộ hóa (Sync)
+Chèn các mốc kiểm soát (checkpoints) vào dữ liệu để tiếp tục truyền nếu mất mạng.
+3. Giải phóng & Bảo mật
+Đóng phiên an toàn khi hoàn tất truyền tải và đảm bảo xác thực quyền truy cập.
+
+--- SLIDE 18 ---
+Transport Layer
+Tầng 
+vận chuyển 
+(Layer 
+4
+)
+Chức năng chính
+Đảm bảo việc truyền tải toàn bộ thông điệp từ đầu đến cuối. Nó hoạt động như một cầu nối, cung cấp dịch vụ cho lớp Ứng dụng đồng thời sử dụng cơ sở hạ tầng của lớp Mạng để đảm bảo dữ liệu đến đúng ứng dụng trên máy chủ đích.
+Cách hoạt động thực tế
+1. Phân đoạn & Tái hợp
+Chia dữ liệu lớn thành các segment ở đầu gửi và lắp ghép lại chính xác ở đầu nhận.
+2. Kiểm soát luồng
+Điều tiết tốc độ truyền dữ liệu phù hợp với khả năng xử lý của thiết bị nhận.
+3. Kiểm soát lỗi
+Phát hiện và xử lý các segment bị lỗi hoặc thất lạc trong quá trình truyền tải.
+
+--- SLIDE 19 ---
+Network Layer
+Tầng 
+mạng 
+(Layer 
+3
+)
+Chức năng chính
+Quản lý việc truyền dữ liệu giữa các máy chủ trên các mạng khác nhau bằng cách xử lý địa chỉ logic và tìm đường dẫn.
+Cách hoạt động thực tế
+1. Định địa chỉ (Addressing)
+Gán địa chỉ IP nguồn và đích vào mỗi gói tin (packet) để định danh thiết bị gửi và nhận.
+2. Định tuyến (Routing)
+Các bộ định tuyến (routers) xác định con đường đi tối ưu nhất để truyền gói tin qua các mạng.
+
+--- SLIDE 20 ---
+Data Link Layer
+Tầng 
+liên kết dữ liệu 
+(Layer 
+2
+)
+Chức năng chính
+Nó đóng vai trò là cầu nối giữa phần cứng vật lý và mạng logic, đảm bảo việc truyền dữ liệu đáng tin cậy giữa các nút. Mục tiêu chính của nó là đảm bảo quá trình truyền dữ liệu không có lỗi trên môi trường vật lý.
+Cách hoạt động thực tế
+1. Đóng khung (Framing)
+Đóng gói các gói tin từ tầng mạng thành các khung dữ liệu (frames) để chuẩn bị truyền đi.
+2. Kiểm soát truy cập (MAC)
+Điều phối quyền truy cập vào môi trường truyền dẫn vật lý dùng chung giữa các thiết bị.
+3. Kiểm tra lỗi (Error Control)
+Sử dụng mã kiểm tra để phát hiện và loại bỏ các khung dữ liệu bị lỗi trong quá trình truyền.
+
+--- SLIDE 21 ---
+Physical Layer
+Tầng 
+vật lý 
+(Layer 
+1
+)
+Chức năng chính
+Nó là nền tảng của mô hình OSI, đóng vai trò là cầu nối cho các kết nối vật lý thực tế giữa các thiết bị. Nhiệm vụ chính của nó là truyền tải các luồng bit thô, không cấu trúc qua môi trường vật lý từ nút này sang nút khác.
+Thành phần & Thiết bị
+1. Môi trường truyền
+Cáp đồng, cáp quang hoặc sóng vô tuyến truyền tải tín hiệu giữa các đầu cuối.
+2. Tín hiệu & Mã hóa
+Chuyển đổi luồng bit thô (0 và 1) thành các xung điện hoặc xung ánh sáng vật lý.
+3. Thiết bị kết nối
+Các phần cứng truyền dẫn thực tế như Hub, Repeater, cáp và đầu nối RJ45.
+
+--- SLIDE 22 ---
+Mô hình TCP/IP
+1. Application
+(ứng dụng: HTTP, SMTP, DNS)
+2
+. Transport
+(TCP, UDP - vận chuyển end-to-end)
+3.
+ Internet
+(IP - định tuyến, địa chỉ logic)
+4
+. 
+Network Access / Link
+(Ethernet, WiFi - truyền trong 1 mạng)
+
+--- SLIDE 23 ---
+Quá trình truyền và nhận
+(Encapsulation & De-encapsulation)
+Đơn vị dữ liệu tương ứng tại mỗi tầng giao thức trong quá trình đóng gói và truyền tải.
+1
+Data
+Được tạo ra ở tầng Application
+2
+Segment
+Tầng Transport (chứa thông tin port, protocol)
+3
+Packet
+Tầng Network (chứa thông tin src IP, dest IP)
+4
+Frame
+Tầng Data Link (chứa thông tin src MAC, dest MAC)
+5
+Bits
+Tầng Physic (chuyển Frame thành tín hiệu để truyền đi)
+
+--- SLIDE 24 ---
+THIẾT BỊ
+
+--- SLIDE 25 ---
+HUB
+Bộ tập trung
+Thiết bị đơn giản, kết nối nhiều máy tính trong mạng để truyền tải dữ liệu vật lý.
+Đặc tính hoạt động
+1. Tầng hoạt động
+Hoạt động ở tầng vật lý (Layer 1) trong mô hình OSI.
+2. Cơ chế phân phối
+Khi nhận dữ liệu, hub phát ra cho tất cả các cổng còn lại.
+3. Nhược điểm
+Gây ra nhiều xung đột dữ liệu (collision) trên đường truyền.
+
+--- SLIDE 26 ---
+Switch
+Bộ chuyển mạch
+Thiết bị kết nối trung tâm thông minh, tối ưu hóa băng thông truyền tải dữ liệu.
+Đặc tính hoạt động
+1. Tầng hoạt động
+Hoạt động ở tầng liên kết dữ liệu (Layer 2) trong mô hình OSI.
+2. Cơ chế phân phối
+Học địa chỉ MAC để chuyển tiếp dữ liệu chính xác đến cổng của thiết bị đích.
+3. Hiệu năng truyền
+Giảm thiểu xung đột dữ liệu nhờ chia nhỏ các miền đụng độ (collision domain).
+
+--- SLIDE 27 ---
+Router
+Bộ định tuyến
+Thiết bị định tuyến thông minh, kết nối các mạng khác nhau và tối ưu hóa đường truyền dữ liệu.
+Đặc tính hoạt động
+1. Tầng hoạt động
+Hoạt động ở tầng mạng (Layer 3) trong mô hình OSI.
+2. Kết nối mạng
+Kết nối các mạng khác biệt (ví dụ: mạng LAN với Internet).
+3. Cơ chế định tuyến
+Có chức năng định tuyến các gói tin dựa trên địa chỉ IP.
+
+--- SLIDE 28 ---
+Server
+Máy chủ
+Thiết bị trung tâm cung cấp tài nguyên, dịch vụ và quản lý các yêu cầu từ máy khách trong mạng.
+Đặc tính hoạt động
+1. Vai trò chính
+Cung cấp dịch vụ, lưu trữ và xử lý yêu cầu cho các máy khách (client) trong mạng.
+2. Các loại máy chủ
+Ví dụ điển hình bao gồm: Web server, Mail server, File server, Database server.
+3. Yêu cầu vận hành
+Cấu hình cực mạnh, hoạt động liên tục 24/7 đảm bảo tính sẵn sàng tối đa.
+
+--- SLIDE 29 ---
+Tools
+Cisco Packet Tracer
+Wireshark
+
