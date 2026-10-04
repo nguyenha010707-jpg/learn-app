@@ -10,10 +10,11 @@
 
 const INITIAL_TOPICS = [
   { id: 'all', name: '🎯 Tất cả chuyên đề (Tổng hợp)', desc: 'Ôn tập toàn diện toàn bộ bài giảng' },
-  { id: 'chap1', name: '🌐 Chương 1: Internet & Mô hình OSI / TCP/IP (MỚI NẠP)', desc: 'Khái niệm Internet, 7 tầng OSI, 4 tầng TCP/IP, Đóng gói Encapsulation, Hub/Switch/Router' },
+  { id: 'chap1', name: '🌐 Chương 1: Internet & Mô hình OSI / TCP/IP', desc: 'Khái niệm Internet, 7 tầng OSI, 4 tầng TCP/IP, Đóng gói Encapsulation, Hub/Switch/Router' },
   { id: 'phy', name: '⚡ Chương 2.1: Tầng Physical & Cáp truyền dẫn', desc: 'Cáp đồng, Cáp quang, RJ45, ODF, SFP, Media Converter...' },
   { id: 'datalink', name: '🔄 Chương 2.2: Data Link Layer & Ethernet Switch', desc: 'Khung Ethernet, Địa chỉ MAC, Bảng CAM, CSMA/CD, Collision Domain...' },
   { id: 'arp', name: '🚀 Chương 2.3: Giao thức ARP & Định tuyến mạng', desc: 'ARP Request/Reply, Default Gateway, Wi-Fi, DHCP, Luồng gói ICMP qua Router...' },
+  { id: 'chap4', name: '🖧 Chương 4: Tầng Network — IPv4 & Subnetting ✨MỚI', desc: 'IPv4 cấu trúc, Private/Public, NAT, Classful/CIDR, Subnetting, VLSM, Block Size, bài tập tính toán subnet' },
   { id: 'custom', name: '📂 Chuyên đề mở rộng (Tự thêm)', desc: 'Nơi lưu trữ các câu hỏi bạn tự thêm vào hệ thống' }
 ];
 
@@ -981,3 +982,481 @@ const INITIAL_FLASHCARDS = [
   { term: 'Default Gateway', def: 'Địa chỉ Router đóng vai trò cửa ngõ chuyển tiếp mọi lưu lượng ra ngoài phân đoạn mạng cục bộ (khác Subnet).' },
   { term: 'Nguyên tắc Hop-by-Hop vs End-to-End', def: 'IP nguồn và IP đích (Layer 3) giữ nguyên suốt hành trình. MAC nguồn và MAC đích (Layer 2) thay đổi liên tục qua từng Router.' }
 ];
+
+// ============================================================
+// CHƯƠNG 4: TẦNG NETWORK — ĐỊA CHỈ IPv4 & ĐỊNH TUYẾN P1
+// (Nạp từ PDF: Chương 4_ Tầng Network - Địa chỉ IPv4 & Định tuyến - P1.pdf, 47 trang)
+// ============================================================
+
+// --- THÊM CÂU TRẮC NGHIỆM CHƯƠNG 4 ---
+INITIAL_QUIZ_DATA.push(
+  // === LÝ THUYẾT IPv4 ===
+  {
+    id: 'c4-1',
+    topic: 'chap4',
+    question: 'Địa chỉ IPv4 có cấu trúc như thế nào về độ dài và cách biểu diễn?',
+    options: [
+      '64 bit, gồm 8 octet, giá trị mỗi octet từ 0 đến 255',
+      '32 bit, gồm 4 octet, mỗi octet có giá trị thập phân từ 0 đến 255, ngăn cách bởi dấu chấm',
+      '128 bit, gồm 16 octet, biểu diễn bằng hệ thập lục phân',
+      '32 bit, gồm 4 octet, mỗi octet từ 1 đến 254'
+    ],
+    correct: 1,
+    explanation: 'IPv4 có độ dài 32 bit chia thành 4 phần bằng nhau gọi là octet, mỗi octet có giá trị thập phân từ 0 đến 255 và được ngăn cách bởi dấu chấm. Ví dụ: 192.168.10.25.'
+  },
+  {
+    id: 'c4-2',
+    topic: 'chap4',
+    question: 'Địa chỉ IPv4 luôn được chia thành 2 phần. Ranh giới giữa 2 phần đó được xác định bởi yếu tố nào?',
+    options: [
+      'Địa chỉ MAC của thiết bị',
+      'Số cổng (Port number) của ứng dụng',
+      'Prefix Length (ký hiệu /n) hoặc Subnet Mask',
+      'Giao thức tầng Transport (TCP hoặc UDP)'
+    ],
+    correct: 2,
+    explanation: 'Địa chỉ IPv4 luôn có 2 phần: Network Portion (phần mạng) và Host Portion (phần máy chủ). Ranh giới giữa 2 phần này được xác định bởi Prefix Length (/n) hoặc Subnet Mask tương ứng.'
+  },
+  {
+    id: 'c4-3',
+    topic: 'chap4',
+    question: 'Địa chỉ Network Address (địa chỉ mạng) có đặc điểm nhận dạng cốt lõi là gì?',
+    options: [
+      'Tất cả các bit thuộc phần Network đều bằng 0',
+      'Tất cả các bit thuộc phần Host đều có giá trị bằng 0 (Host bits = 0)',
+      'Tất cả các bit thuộc phần Host đều có giá trị bằng 1 (Host bits = 1)',
+      'Octet cuối cùng luôn có giá trị là 0 bất kể Prefix'
+    ],
+    correct: 1,
+    explanation: 'Network Address là địa chỉ đại diện cho toàn bộ subnet. Đặc điểm nhận dạng: tất cả các bit thuộc phần Host đều bằng 0. Địa chỉ này không được gán cho bất kỳ thiết bị host nào.'
+  },
+  {
+    id: 'c4-4',
+    topic: 'chap4',
+    question: 'Broadcast Address có đặc điểm gì khác biệt so với Network Address?',
+    options: [
+      'Giống hệt Network Address, chỉ khác tên gọi',
+      'Tất cả bit Host = 0, dùng để gửi dữ liệu cho 1 thiết bị duy nhất',
+      'Tất cả các bit thuộc phần Host được bật lên 1 (Host bits = 1), dùng để gửi đồng thời đến tất cả host trong subnet',
+      'Chỉ xuất hiện trong mạng IPv6, không có trong IPv4'
+    ],
+    correct: 2,
+    explanation: 'Broadcast Address trái ngược với Network Address: tất cả bit Host = 1. Thiết bị dùng địa chỉ này khi muốn gửi dữ liệu đồng thời đến tất cả host trong cùng một subnet.'
+  },
+  {
+    id: 'c4-5',
+    topic: 'chap4',
+    question: '3 dải địa chỉ IPv4 Private (RFC 1918) được quy định là những dải nào?',
+    options: [
+      '10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16',
+      '10.0.0.0/8, 172.0.0.0/8, 192.0.0.0/8',
+      '172.16.0.0/16, 192.168.1.0/24, 10.10.0.0/16',
+      '224.0.0.0/4, 240.0.0.0/4, 169.254.0.0/16'
+    ],
+    correct: 0,
+    explanation: 'RFC 1918 quy định 3 dải Private: Dải 1: 10.0.0.0/8 (~16 triệu IP); Dải 2: 172.16.0.0/12 (~1 triệu IP); Dải 3: 192.168.0.0/16 (~65k IP). Các dải này không được định tuyến trực tiếp trên Internet.'
+  },
+  {
+    id: 'c4-6',
+    topic: 'chap4',
+    question: 'NAT (Network Address Translation) thực hiện chức năng gì và thường được đặt ở thiết bị nào?',
+    options: [
+      'Phân giải tên miền thành địa chỉ IP, đặt tại DNS Server',
+      'Chuyển đổi địa chỉ IP giữa các không gian mạng (thường từ Private sang Public), thực hiện tại Router hoặc Firewall biên',
+      'Mã hóa toàn bộ lưu lượng mạng bằng AES-256, đặt tại Switch lõi',
+      'Phân phối địa chỉ IP động cho các thiết bị, thực hiện tại DHCP Server'
+    ],
+    correct: 1,
+    explanation: 'NAT chuyển đổi địa chỉ IP Private sang Public (và ngược lại) để các thiết bị nội bộ có thể truy cập Internet. Quá trình này thường thực hiện tại Router hoặc Firewall biên của tổ chức.'
+  },
+  {
+    id: 'c4-7',
+    topic: 'chap4',
+    question: 'CIDR (Classless Inter-Domain Routing) ra đời năm 1993 thay thế Classful vì lý do cốt lõi nào?',
+    options: [
+      'Classful quá phức tạp và tốn nhiều bộ nhớ Router',
+      'Classful gây lãng phí địa chỉ IPv4 nghiêm trọng (ví dụ doanh nghiệp cần 500 IP phải nhận 65.534 IP Class B)',
+      'Classful không hỗ trợ giao thức TCP/IP',
+      'Classful chỉ hoạt động được với cáp quang, không hỗ trợ cáp đồng'
+    ],
+    correct: 1,
+    explanation: 'Classful phân chia cứng nhắc (A/8, B/16, C/24) gây lãng phí khổng lồ. Ví dụ: cần 500 IP → 1 Class C (254 IP) không đủ, nhưng 1 Class B (65.534 IP) lãng phí >65.000 IP. CIDR giải quyết bằng Prefix linh hoạt /0 đến /32.'
+  },
+  {
+    id: 'c4-8',
+    topic: 'chap4',
+    question: 'Công thức tính số Host usable (khả dụng để gán cho thiết bị) trong một subnet là gì?',
+    options: [
+      'Host usable = 2^Prefix',
+      'Host usable = 2^(32 - Prefix) - 2',
+      'Host usable = 2^(32 - Prefix)',
+      'Host usable = 32 - Prefix'
+    ],
+    correct: 1,
+    explanation: 'Công thức: Host usable = 2^(32-Prefix) - 2. Phải trừ 2 vì loại bỏ: (1) Network Address (Host bits = 0) và (2) Broadcast Address (Host bits = 1). Ví dụ /26: 2^6 - 2 = 64 - 2 = 62 host.'
+  },
+  {
+    id: 'c4-9',
+    topic: 'chap4',
+    question: 'Phương pháp tính Block Size (Bước nhảy) giữa các subnet liên tiếp được tính theo công thức nào?',
+    options: [
+      'Block Size = Prefix Length x 2',
+      'Block Size = 2^(32 - Prefix)',
+      'Block Size = 256 - (giá trị octet thay đổi của Subnet Mask)',
+      'Block Size = 255 - Prefix Length'
+    ],
+    correct: 2,
+    explanation: 'Block Size = 256 - (giá trị octet thay đổi của Subnet Mask). Ví dụ /26 có Mask .192 → Block Size = 256 - 192 = 64. Nghĩa là mỗi subnet kế tiếp nhau cách nhau 64 địa chỉ: .0/26, .64/26, .128/26, .192/26.'
+  },
+  {
+    id: 'c4-10',
+    topic: 'chap4',
+    question: 'Khi truyền đến Local Destination (cùng subnet) và Remote Destination (khác subnet), thiết bị hành xử khác nhau thế nào?',
+    options: [
+      'Cả hai trường hợp đều gửi trực tiếp, không cần qua Router',
+      'Local: gửi frame trực tiếp đến đích Layer 2 (không qua Router); Remote: gửi frame đến Default Gateway để Router chuyển tiếp',
+      'Local: phải đi qua Router; Remote: gửi trực tiếp',
+      'Cả hai đều phải gửi qua DNS Server trước'
+    ],
+    correct: 1,
+    explanation: 'Local (cùng subnet): gửi frame trực tiếp đến MAC của đích qua ARP, không cần Router. Remote (khác subnet): gửi frame đến Default Gateway (MAC của Router), Router tiếp tục chuyển tiếp packet theo IP đích.'
+  },
+
+  // === BÀI TẬP TÍNH TOÁN TRẮC NGHIỆM ===
+  {
+    id: 'c4-calc-1',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Cho địa chỉ IP 192.168.10.25/24. Network Address và Broadcast Address của mạng này là gì?',
+    options: [
+      'Network: 192.168.10.1 | Broadcast: 192.168.10.254',
+      'Network: 192.168.10.0 | Broadcast: 192.168.10.255',
+      'Network: 192.168.0.0 | Broadcast: 192.168.255.255',
+      'Network: 192.168.10.25 | Broadcast: 192.168.10.255'
+    ],
+    correct: 1,
+    explanation: '/24 = Mask 255.255.255.0. Network Address: tất cả bit Host (8 bit octet 4) = 0 → 192.168.10.0. Broadcast Address: tất cả bit Host = 1 → 192.168.10.255. Dải Host khả dụng: .1 đến .254 (254 host).'
+  },
+  {
+    id: 'c4-calc-2',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Prefix /26 có Subnet Mask thập phân là gì và có bao nhiêu Host usable?',
+    options: [
+      'Mask: 255.255.255.192 | Host usable: 62',
+      'Mask: 255.255.255.224 | Host usable: 30',
+      'Mask: 255.255.255.128 | Host usable: 126',
+      'Mask: 255.255.255.240 | Host usable: 14'
+    ],
+    correct: 0,
+    explanation: '/26: Host bits = 32 - 26 = 6. Mask: 26 bit 1 → 11111111.11111111.11111111.11000000 = 255.255.255.192. Tổng IP = 2^6 = 64. Host usable = 64 - 2 = 62 (trừ Network và Broadcast).'
+  },
+  {
+    id: 'c4-calc-3',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Địa chỉ 192.168.10.130/26 thuộc về subnet nào? (Block Size = 64)',
+    options: [
+      '192.168.10.0/26 (dải .0 - .63)',
+      '192.168.10.64/26 (dải .64 - .127)',
+      '192.168.10.128/26 (dải .128 - .191)',
+      '192.168.10.192/26 (dải .192 - .255)'
+    ],
+    correct: 2,
+    explanation: 'Block Size = 256 - 192 = 64. Các subnet: .0/26 (.0-.63), .64/26 (.64-.127), .128/26 (.128-.191), .192/26 (.192-.255). Octet cuối IP = 130. So sánh: 128 ≤ 130 < 192 → thuộc subnet 192.168.10.128/26.'
+  },
+  {
+    id: 'c4-calc-4',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Subnet 192.168.10.128/26: Network Address, Broadcast Address và số Host usable là bao nhiêu?',
+    options: [
+      'Network: .128 | Broadcast: .190 | Host: .129 đến .189',
+      'Network: .128 | Broadcast: .191 | Host: .129 đến .190 (62 host)',
+      'Network: .129 | Broadcast: .192 | Host: .130 đến .191',
+      'Network: .128 | Broadcast: .255 | Host: .129 đến .254'
+    ],
+    correct: 1,
+    explanation: 'Subnet 192.168.10.128/26: Network = .128. Broadcast = 128 + 64 - 1 = 191 → 192.168.10.191. Dải Host: .129 đến .190. Host usable = 2^6 - 2 = 62.'
+  },
+  {
+    id: 'c4-calc-5',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Prefix /27 có bao nhiêu Host usable và Block Size là bao nhiêu?',
+    options: [
+      'Host usable: 62 | Block Size: 64',
+      'Host usable: 30 | Block Size: 32',
+      'Host usable: 14 | Block Size: 16',
+      'Host usable: 126 | Block Size: 128'
+    ],
+    correct: 1,
+    explanation: '/27: Host bits = 5. Host usable = 2^5 - 2 = 32 - 2 = 30. Mask = 255.255.255.224 (octet cuối = 224). Block Size = 256 - 224 = 32. Các subnet: .0/27, .32/27, .64/27, .96/27...'
+  },
+  {
+    id: 'c4-calc-6',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Vì sao Prefix /30 là lựa chọn tối ưu cho đường kết nối Point-to-Point giữa 2 Router?',
+    options: [
+      'Vì /30 có 30 host usable, đủ cho 30 Router kết nối',
+      'Vì /30 có Host usable = 2^2 - 2 = 2, vừa đủ cho 2 interface Router, tránh lãng phí IP',
+      'Vì /30 là Prefix lớn nhất có thể dùng cho IPv4',
+      'Vì /30 không có địa chỉ Broadcast nên truyền nhanh hơn'
+    ],
+    correct: 1,
+    explanation: '/30: Host bits = 2. Host usable = 2^2 - 2 = 4 - 2 = 2. Đường P2P chỉ cần 2 địa chỉ (1 cho mỗi interface Router). /30 cấp vừa đủ 2 host, không lãng phí. Mask: 255.255.255.252, Block Size = 4.'
+  },
+  {
+    id: 'c4-calc-7',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Prefix /22 có bao nhiêu Host usable và Subnet Mask thập phân là gì?',
+    options: [
+      'Host usable: 510 | Mask: 255.255.254.0',
+      'Host usable: 1022 | Mask: 255.255.252.0',
+      'Host usable: 2046 | Mask: 255.255.248.0',
+      'Host usable: 254 | Mask: 255.255.255.0'
+    ],
+    correct: 1,
+    explanation: '/22: Host bits = 10. Host usable = 2^10 - 2 = 1024 - 2 = 1022. Mask: 22 bit 1 → 11111111.11111111.11111100.00000000 = 255.255.252.0. Block Size = 256 - 252 = 4 (thay đổi ở octet thứ 3).'
+  },
+  {
+    id: 'c4-calc-8',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Cho IP 172.16.45.100/20. Địa chỉ này thuộc Network Address nào? (Block Size /20 = 16, thay đổi ở octet thứ 3)',
+    options: [
+      '172.16.32.0/20',
+      '172.16.40.0/20',
+      '172.16.45.0/20',
+      '172.16.48.0/20'
+    ],
+    correct: 1,
+    explanation: 'Mask /20 = 255.255.240.0. Block Size = 256 - 240 = 16 (tại octet 3). Liệt kê octet 3: 0, 16, 32, 40, 48... Octet 3 của IP = 45. So sánh: 40 ≤ 45 < 48 → thuộc 172.16.40.0/20. Broadcast: 172.16.47.255.'
+  },
+  {
+    id: 'c4-calc-9',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Một công ty cần ít nhất 50 host trong một subnet. Prefix nhỏ nhất (tiết kiệm IP nhất) nào đáp ứng yêu cầu?',
+    options: [
+      '/25 → Host usable = 126 (đủ nhưng lãng phí)',
+      '/26 → Host usable = 62 (đủ và tối ưu nhất)',
+      '/27 → Host usable = 30 (không đủ)',
+      '/24 → Host usable = 254 (đủ nhưng quá lãng phí)'
+    ],
+    correct: 1,
+    explanation: 'Cần >= 50 host. /27 cho 30 host (không đủ). /26 cho 62 host (đủ và tiết kiệm nhất vì vừa sát nhu cầu). /25 cho 126 host (lãng phí gần 2x). Đáp án: /26 = 255.255.255.192, Block Size = 64.'
+  },
+  {
+    id: 'c4-calc-10',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Chia mạng 192.168.1.0/24 thành các subnet /26. Subnet thứ 3 (đếm từ đầu) có Network Address là gì?',
+    options: [
+      '192.168.1.0/26',
+      '192.168.1.64/26',
+      '192.168.1.128/26',
+      '192.168.1.192/26'
+    ],
+    correct: 2,
+    explanation: 'Block Size /26 = 64. Subnet 1: 192.168.1.0/26 (.0-.63). Subnet 2: 192.168.1.64/26 (.64-.127). Subnet 3: 192.168.1.128/26 (.128-.191). Subnet 4: 192.168.1.192/26 (.192-.255).'
+  },
+  {
+    id: 'c4-calc-11',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Hai địa chỉ 10.0.0.50/27 và 10.0.0.70/27 có cùng thuộc một subnet không?',
+    options: [
+      'Có, cùng subnet 10.0.0.0/27',
+      'Không. .50 thuộc 10.0.0.32/27 (dải .32-.63); .70 thuộc 10.0.0.64/27 (dải .64-.95) → 2 subnet khác nhau',
+      'Có, cùng subnet 10.0.0.64/27',
+      'Không đủ thông tin để xác định'
+    ],
+    correct: 1,
+    explanation: 'Block Size /27 = 32. Subnet: .0/27 (0-31), .32/27 (32-63), .64/27 (64-95)... .50 → 32≤50≤63 thuộc .32/27. .70 → 64≤70≤95 thuộc .64/27. KHÁC NHAU → không giao tiếp trực tiếp Layer 2, cần Router.'
+  },
+  {
+    id: 'c4-calc-12',
+    topic: 'chap4',
+    question: '[TÍNH TOÁN] Cho dải 10.0.0.0/30 (đường Point-to-Point). Network Address, Broadcast Address và 2 host khả dụng là gì?',
+    options: [
+      'Network: 10.0.0.0 | Broadcast: 10.0.0.4 | Host: 10.0.0.1 và 10.0.0.3',
+      'Network: 10.0.0.0 | Broadcast: 10.0.0.3 | Host: 10.0.0.1 và 10.0.0.2',
+      'Network: 10.0.0.1 | Broadcast: 10.0.0.4 | Host: 10.0.0.2 và 10.0.0.3',
+      'Network: 10.0.0.0 | Broadcast: 10.0.0.2 | Host: 10.0.0.1 duy nhất'
+    ],
+    correct: 1,
+    explanation: '/30: Block Size = 256 - 252 = 4. Tổng 4 địa chỉ: Network = 10.0.0.0, Host 1 = 10.0.0.1 (Router A), Host 2 = 10.0.0.2 (Router B), Broadcast = 10.0.0.3. Subnet tiếp theo: 10.0.0.4/30.'
+  }
+);
+
+// --- THÊM CÂU HỎI TỰ LUẬN CHƯƠNG 4 ---
+INITIAL_ESSAY_DATA.push(
+  {
+    id: 'es-c4-1',
+    topic: 'chap4',
+    title: '[Tổng hợp] Phân tích đầy đủ một địa chỉ IPv4: Network, Broadcast, Host usable',
+    question: 'Cho địa chỉ IP 192.168.10.130/26. Hãy xác định đầy đủ: (1) Subnet Mask dạng thập phân, (2) Block Size, (3) Network Address, (4) Broadcast Address, (5) Dải địa chỉ Host khả dụng, (6) Số Host usable. Trình bày từng bước tính toán chi tiết.',
+    suggestedAnswer: `Phân tích địa chỉ 192.168.10.130/26 từng bước:
+
+1. Subnet Mask dạng thập phân:
+- Prefix /26: 26 bit = 1 (phần Network), 6 bit = 0 (phần Host).
+- Nhị phân: 11111111.11111111.11111111.11000000
+- Thập phân: 255.255.255.192
+
+2. Block Size (Bước nhảy):
+- Block Size = 256 - (octet thay đổi) = 256 - 192 = 64
+
+3. Liệt kê các subnet /26 trong dải 192.168.10.x:
+- Subnet 1: 192.168.10.0/26   → Dải: .0 đến .63
+- Subnet 2: 192.168.10.64/26  → Dải: .64 đến .127
+- Subnet 3: 192.168.10.128/26 → Dải: .128 đến .191  ← IP .130 nằm đây
+- Subnet 4: 192.168.10.192/26 → Dải: .192 đến .255
+
+4. Xác định subnet chứa IP .130: so sánh 128 ≤ 130 < 192 → Subnet 3.
+
+5. Network Address:   192.168.10.128 (đầu subnet, Host bits = 0)
+6. Broadcast Address: 192.168.10.191 (= 128 + 64 - 1 = 191, Host bits = 1)
+7. Dải Host khả dụng: 192.168.10.129 đến 192.168.10.190
+8. Số Host usable:    2^6 - 2 = 64 - 2 = 62 host`,
+    keywords: ['255.255.255.192', 'block size', '64', '192.168.10.128', '192.168.10.191', '62', 'host usable', '129', '190', '/26', 'subnet mask', '26 bit']
+  },
+  {
+    id: 'es-c4-2',
+    topic: 'chap4',
+    title: '[Tính toán] Chia mạng 192.168.1.0/24 thành 4 subnet /26',
+    question: 'Chia mạng 192.168.1.0/24 thành các subnet /26. Hãy: (1) Tính Block Size, (2) Liệt kê TẤT CẢ 4 subnet với Network Address, Broadcast Address và dải Host của từng subnet, (3) Tính số Host usable của mỗi subnet.',
+    suggestedAnswer: `Chia mạng 192.168.1.0/24 thành subnet /26:
+
+1. Thông số cơ bản:
+- Prefix gốc /24 → mượn thêm 2 bit (26 - 24 = 2) cho phần Subnet ID.
+- Số subnet = 2^2 = 4 subnet.
+- Subnet Mask mới: 255.255.255.192
+- Block Size = 256 - 192 = 64
+- Host usable/subnet = 2^6 - 2 = 62 host
+
+2. Liệt kê 4 subnet:
+
+Subnet 1: 192.168.1.0/26
+  Network:   192.168.1.0
+  Broadcast: 192.168.1.63
+  Dải Host:  192.168.1.1 → 192.168.1.62  (62 host)
+
+Subnet 2: 192.168.1.64/26
+  Network:   192.168.1.64
+  Broadcast: 192.168.1.127
+  Dải Host:  192.168.1.65 → 192.168.1.126 (62 host)
+
+Subnet 3: 192.168.1.128/26
+  Network:   192.168.1.128
+  Broadcast: 192.168.1.191
+  Dải Host:  192.168.1.129 → 192.168.1.190 (62 host)
+
+Subnet 4: 192.168.1.192/26
+  Network:   192.168.1.192
+  Broadcast: 192.168.1.255
+  Dải Host:  192.168.1.193 → 192.168.1.254 (62 host)
+
+3. Kiểm tra: 4 subnet × 64 địa chỉ = 256 = toàn bộ /24. Đúng!`,
+    keywords: ['block size 64', '4 subnet', '255.255.255.192', '62 host', '192.168.1.0', '192.168.1.63', '192.168.1.64', '192.168.1.127', '192.168.1.128', '192.168.1.191', '192.168.1.192', '192.168.1.255', 'mượn 2 bit']
+  },
+  {
+    id: 'es-c4-3',
+    topic: 'chap4',
+    title: '5 lý do tại sao phải chia mạng con (Subnetting) trong hệ thống mạng',
+    question: 'Trình bày đầy đủ 5 lý do kỹ thuật và vận hành cốt lõi tại sao các kỹ sư mạng bắt buộc phải chia subnet. Với mỗi lý do, hãy giải thích cơ chế kỹ thuật và lợi ích đạt được.',
+    suggestedAnswer: `5 Lý do bắt buộc phải chia Subnet (Subnetting):
+
+1. Thu Nhỏ Broadcast Domain & Tăng Hiệu Năng:
+Khi không chia subnet, mọi gói ARP/DHCP Broadcast phát đến toàn bộ thiết bị trong mạng → Broadcast Storm, tiêu tốn CPU. Khi chia subnet, Broadcast bị khoanh vùng trong từng subnet nhỏ → giảm tải CPU, tăng tốc độ thực sự.
+
+2. Tiết Kiệm & Tối Ưu Hóa Địa Chỉ IP (VLSM):
+IPv4 có giới hạn nghiêm ngặt. VLSM cho phép cấp phát IP vừa đủ theo đúng nhu cầu: /28 (14 host) cho phòng nhỏ, /30 (2 host) cho đường P2P, tránh lãng phí tối đa.
+
+3. Tăng Cường Bảo Mật & Kiểm Soát Truy Cập:
+Thiết bị cùng subnet giao tiếp trực tiếp Layer 2, bypass Firewall. Khi chia subnet, dữ liệu giữa các phòng ban phải qua Router/Firewall → áp dụng ACLs, bảo vệ dữ liệu nhạy cảm.
+
+4. Cô Lập & Khoanh Vùng Xử Lý Sự Cố (Fault Isolation):
+Máy nhiễm malware hoặc NIC gây bão tín hiệu chỉ ảnh hưởng trong subnet đó. Quản trị viên ngắt subnet lỗi tại Gateway mà không làm gián đoạn toàn hệ thống.
+
+5. Định Tuyến Phân Cấp & Thu Gọn Routing Table (Route Summarization):
+Không chia subnet: Router lưu route đến từng IP riêng lẻ → bảng phình to. Có subnet: gom nhiều subnet thành 1 route đại diện (192.168.0.0/22 đại diện 4 subnet /24) → giảm kích thước Routing Table, tăng tốc Router.`,
+    keywords: ['broadcast domain', 'broadcast storm', 'vlsm', 'tiết kiệm ip', 'bảo mật', 'acl', 'firewall', 'cô lập sự cố', 'fault isolation', 'route summarization', 'routing table', '5 lý do', 'cpu', 'malware']
+  },
+  {
+    id: 'es-c4-4',
+    topic: 'chap4',
+    title: 'So sánh Classful (A/B/C) và Classless (CIDR) trong IPv4',
+    question: 'So sánh hệ thống Classful và CIDR: (1) Thông số kỹ thuật Class A, B, C (bit đầu, Mask mặc định, số host), (2) Hạn chế chí mạng của Classful, (3) Ưu điểm vượt trội của CIDR.',
+    suggestedAnswer: `So sánh Classful vs Classless (CIDR):
+
+1. Hệ thống Classful (RFC 791, 1981):
+
+Class A (/8): Bit đầu = 0. Octet 1 từ 1-126. Mask: 255.0.0.0.
+→ 8 bit Network, 24 bit Host. 126 mạng, ~16.7 triệu host/mạng.
+
+Class B (/16): Bit đầu = 10. Octet 1 từ 128-191. Mask: 255.255.0.0.
+→ 16 bit Network, 16 bit Host. 16.384 mạng, 65.534 host/mạng.
+
+Class C (/24): Bit đầu = 110. Octet 1 từ 192-223. Mask: 255.255.255.0.
+→ 24 bit Network, 8 bit Host. 2 triệu+ mạng, 254 host/mạng.
+
+2. Hạn chế chí mạng của Classful:
+- Lãng phí IP nghiêm trọng: cần 500 IP → 1 Class C (254 IP) không đủ, nhưng 1 Class B (65.534 IP) lãng phí >65.000 IP.
+- Phân chia cứng nhắc, không tùy chỉnh theo nhu cầu thực tế.
+- Gây khủng hoảng cạn kiệt IP từ giữa thập niên 1990.
+
+3. Ưu điểm của CIDR (1993):
+- Loại bỏ khái niệm Class A/B/C trên Internet.
+- Prefix /n linh hoạt từ /0 đến /32, đặt ở bất kỳ vị trí bit nào (/20, /27, /30...).
+- Cấp phát chính xác: /28 cho 14 host, /30 cho 2 host (Point-to-Point).
+- Route Aggregation: gom tuyến linh hoạt, thu gọn bảng định tuyến toàn cầu.`,
+    keywords: ['class a', 'class b', 'class c', '/8', '/16', '/24', '255.0.0.0', '255.255.0.0', '255.255.255.0', 'cidr', 'prefix', 'lãng phí', 'classful', 'classless', 'route aggregation', '65534', '254', '126']
+  },
+  {
+    id: 'es-c4-5',
+    topic: 'chap4',
+    title: '[Thiết kế] Chọn Prefix tối ưu và tính thông số cho 2 tình huống thực tế',
+    question: 'Tình huống A: Công ty cần subnet chứa ~1000 host cho phòng máy chủ. Chọn Prefix nào tối ưu? Tính đủ Mask, Block Size, Network, Broadcast, số Host. Tình huống B: Thiết kế đường Point-to-Point giữa 2 Router dùng /30, cho dải 10.0.0.0/30. Giải thích lý do chọn /30.',
+    suggestedAnswer: `Bài tập thiết kế mạng:
+
+PHẦN A: Subnet cho ~1000 host
+Yêu cầu: >= 1000 host usable.
+
+Kiểm tra Prefix:
+- /22: 2^10 - 2 = 1022 host → ĐỦ và tối ưu nhất
+- /21: 2^11 - 2 = 2046 host → đủ nhưng lãng phí 2x
+
+Chọn /22 (tối ưu nhất).
+
+Thông số /22 (ví dụ 192.168.0.0/22):
+- Subnet Mask: 255.255.252.0 (nhị phân: 11111111.11111111.11111100.00000000)
+- Block Size: 256 - 252 = 4 (thay đổi ở octet 3)
+- Network Address: 192.168.0.0
+- Broadcast Address: 192.168.3.255 (= tăng octet 3 thêm Block 4 - 1 → .3.255)
+- Dải Host: 192.168.0.1 đến 192.168.3.254
+- Số Host usable: 1022 host
+
+PHẦN B: Đường Point-to-Point /30
+Lý do chọn /30: Đường P2P chỉ cần đúng 2 địa chỉ IP (1 cho mỗi interface Router).
+/30: Host bits = 2 → Host usable = 2^2 - 2 = 2. Vừa đủ, không lãng phí.
+
+Thông số 10.0.0.0/30:
+- Subnet Mask: 255.255.255.252
+- Block Size: 256 - 252 = 4
+- Network Address: 10.0.0.0
+- Broadcast Address: 10.0.0.3
+- Host 1 (Router A): 10.0.0.1
+- Host 2 (Router B): 10.0.0.2`,
+    keywords: ['/22', '1022', '255.255.252.0', 'block size 4', '/30', '255.255.255.252', '2 host', 'point-to-point', '10.0.0.1', '10.0.0.2', '10.0.0.3', 'host usable', 'network', 'broadcast']
+  }
+);
+
+// --- THÊM FLASHCARD CHƯƠNG 4 ---
+INITIAL_FLASHCARDS.push(
+  { term: 'IPv4 — Cấu trúc cơ bản', def: '32 bit = 4 octet, mỗi octet 0-255, ngăn cách dấu chấm. Gồm 2 phần: Network Portion và Host Portion. Ranh giới xác định bởi Prefix (/n) hoặc Subnet Mask.' },
+  { term: 'Network Address', def: 'Địa chỉ mạng: tất cả bit Host = 0. Ví dụ 192.168.10.0/24. KHÔNG được gán cho host. Đây là địa chỉ đầu tiên của subnet.' },
+  { term: 'Broadcast Address', def: 'Địa chỉ quảng bá: tất cả bit Host = 1. Ví dụ 192.168.10.255/24. Gửi đến mọi host trong subnet. KHÔNG được gán cho host.' },
+  { term: 'Host usable = 2^(32-Prefix) - 2', def: 'Trừ 2 vì loại bỏ Network Address và Broadcast Address. Ví dụ /26: 2^6 - 2 = 62 host. /27: 2^5 - 2 = 30. /30: 2^2 - 2 = 2.' },
+  { term: 'Block Size (Bước nhảy)', def: 'Block Size = 256 - (giá trị octet thay đổi của Subnet Mask). /26 → .192 → Block = 64. /27 → .224 → Block = 32. /30 → .252 → Block = 4.' },
+  { term: 'Bảng Prefix nhanh', def: '/24→254h | /25→126h | /26→62h | /27→30h | /28→14h | /29→6h | /30→2h (P2P) | /22→1022h | /20→4094h.' },
+  { term: 'IPv4 Private (RFC 1918)', def: '3 dải: 10.0.0.0/8 | 172.16.0.0/12 | 192.168.0.0/16. Dùng nội bộ LAN, không định tuyến Internet, cần NAT để ra ngoài.' },
+  { term: 'NAT (Network Address Translation)', def: 'Kỹ thuật chuyển đổi IP Private → Public tại Router/Firewall biên, cho phép thiết bị nội bộ truy cập Internet.' },
+  { term: 'Classful vs CIDR', def: 'Classful: cố định Class A(/8)=254h, B(/16)=65534h, C(/24)=254h → lãng phí. CIDR (1993): Prefix linh hoạt /0-/32, cấp phát chính xác.' },
+  { term: 'Subnet Mask — Bản chất', def: 'Chuỗi 32 bit: bit Network = 1, bit Host = 0. /24↔255.255.255.0 | /26↔255.255.255.192 | /27↔255.255.255.224 | /30↔255.255.255.252.' },
+  { term: '/30 — Point-to-Point', def: 'Prefix tối ưu cho liên kết 2 Router: 4 IP tổng, 2 host usable (1 mỗi interface), Block Size = 4. Mask: 255.255.255.252.' },
+  { term: 'Cách tìm subnet chứa IP', def: '1. Tính Block Size từ Mask. 2. Liệt kê các mốc subnet. 3. So sánh octet thay đổi của IP. 4. IP nằm trong [Network, Broadcast] nào thì thuộc subnet đó.' },
+  { term: 'Local vs Remote Destination', def: 'Local (cùng subnet): gửi frame trực tiếp Layer 2, không cần Router. Remote (khác subnet): phải gửi frame đến Default Gateway để Router chuyển tiếp.' },
+  { term: 'Subnetting — 5 lý do cốt lõi', def: '1. Thu nhỏ Broadcast Domain. 2. Tiết kiệm IP (VLSM). 3. Bảo mật ACL/Firewall. 4. Cô lập sự cố (Fault Isolation). 5. Route Summarization.' }
+);

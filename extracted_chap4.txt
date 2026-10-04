@@ -1,0 +1,735 @@
+TOTAL PAGES: 47
+
+=== PAGE 1 ===
+Chương 4 Tầng Mạng Network Layer)
+Trong chương này, chúng ta sẽ khám phá Tầng Mạng Network Layer) với các chủ đề trọng tâm bao gồm:
+● Địa chỉ IPv4, khái niệm Prefix và Subnet Mask, phân biệt IPv4 Private và Public.
+● Cấu trúc IPv4 Header, kỹ thuật chia subnet, VLSM Variable Length Subnet Mask).
+● Route Summary và các giao thức định tuyến cơ bản.
+MẠNG MÁY TÍNH  CHƯƠNG 4
+
+=== PAGE 2 ===
+MẠNG MÁY TÍNH  TẦNG NETWORK NETWORK LAYER
+Vai trò Cốt lõi & Thiết bị Tầng Network
+Nhiệm vụ Chuyển gói tin
+Tầng Network đóng vai trò cốt lõi trong việc truyền đưa
+các gói tin (packet) từ mạng nguồn đến mạng đích một
+cách chính xác. Tầng này cung cấp hệ thống địa chỉ logic
+giúp các mạng khác nhau liên lạc và trao đổi dữ liệu
+xuyên suốt.
+THIẾT BỊ CHÍNH ĐƠN VỊ DỮ LIỆU
+Router Packet
+Định tuyến Liên mạng Inter-networking)
+HỆ THỐNG ĐỊA CHỈ LOGIC
+Router đóng vai trò cầu nối trung tâm giữa các dải mạng
+Xác định rõ ràng thiết bị gửi và nhận thông qua địa chỉ
+độc lập (như LAN A và LAN B, sử dụng bảng định tuyến
+logic IP Address), cho phép liên mạng linh hoạt giữa
+Routing Table) để chuyển tiếp gói tin đến đúng đích.
+các phân đoạn hạ tầng khác nhau.
+
+=== PAGE 3 ===
+Tổng quan về IPv4
+IPv4 Internet Protocol version 4) là giao thức mạng phổ biến nhất hiện nay.
+32 Bit 4 Octets 0  255
+ĐỘ DÀI CHUẨN CÁC PHẦN BẰNG NHAU GIÁ TRỊ THẬP PHÂN / OCTET
+Địa chỉ IPv4 gồm 4 octet, mỗi octet có giá trị thập phân từ 0 đến 255 và được ngăn cách với nhau bởi dấu
+chấm.
+VÍ DỤ TIÊU BIỂU
+192.168.10.25
+
+=== PAGE 4 ===
+CẤU TRÚC ĐỊA CHỈ IPV4
+Biểu Diễn Nhị Phân & Octet
+32 Bit 4 Octet 8 Bit / Octet
+KÍCH THƯỚC ĐỊA CHỈ CẤU TRÚC PHÂN DOẠN DUNG LƯỢNG MỖI OCTET
+EXAMPLE CONVERTING DECIMAL TO BINARY
+IPv4 Dec: 192 . 168 . 10 . 25
+OCTET 1 192 OCTET 2 168 OCTET 3 10 OCTET 4 25
+11000000 10101000 00001010 00011001
+Result: 11000000.10101000.00001010.00011001
+Lưu ý quan trọng: Việc hiểu rõ biểu diễn nhị phân này là nền tảng bắt buộc để tính toán subnet sau này.
+
+=== PAGE 5 ===
+KIẾN TRÚC MẠNG IPV4
+Cấu Trúc Địa Chỉ IPv4
+Địa chỉ IPv4 luôn được chia thành hai phần riêng biệt. Ranh giới giữa hai phần được xác định bởi Prefix hoặc Subnet Mask.
+PHẦN 1 PHẦN 2
+Network Portion Phần mạng) Host Portion Phần máy chủ)
+Dùng để xác định mạng lưới. Mọi thiết bị thuộc cùng Dùng để định danh cụ thể thiết bị hoặc interface
+một phân đoạn mạng sẽ chia sẻ chung giá trị phần trong mạng đó. Phải là duy nhất đối với mỗi thiết bị
+mạng này. trong cùng mạng.
+Chức năng: Định danh mạng lưới Chức năng: Định danh thiết bị/interface
+VÍ DỤ PHÂN TÍCH ĐỊA CHỈ IPV4
+Địa chỉ xét: 192.168.10.25/24
+➔ Network Portion: 192.168.10.0 (Mạng xác định bởi Prefix /24 hoặc Subnet Mask)
+➔ Host Portion: .25 (Định danh riêng cho thiết bị trong subnet)
+
+=== PAGE 6 ===
+MẠNG MÁY TÍNH & IP ADDRESSING
+Địa chỉ Network Network Address)
+Là địa chỉ đại diện cho toàn bộ một mạng con (subnet).
+ĐẶC ĐIỂM NHẬN DẠNG CỐT LÕI
+Tất cả các bit thuộc phần Host đều có giá trị bằng 0 (Host bits = 0).
+Địa chỉ IP ban đầu: 192.168.10.25/24
+Địa chỉ Network Address: 192.168.10.0
+LƯU Ý QUAN TRỌNG
+Địa chỉ này tuyệt đối không được dùng để gán cho các host thông thường.
+
+=== PAGE 7 ===
+MẠNG MÁY TÍNH IPV4 ADDRESSING
+Địa chỉ Broadcast Broadcast Address)
+Định nghĩa Broadcast
+Địa chỉ Broadcast được sử dụng khi một thiết bị muốn gửi dữ liệu đồng thời đến tất cả các host khác nằm trong cùng một
+subnet.
+ĐẶC ĐIỂM BIT HOST SO SÁNH VỚI NETWORK ADDRESS
+Trái ngược với địa chỉ Network, địa chỉ Broadcast có Network Address: Tất cả bit Host = 0
+tất cả các bit thuộc phần Host được bật lên 1. Broadcast Address: Tất cả bit Host = 1
+VÍ DỤ TÍNH ĐỊA CHỈ BROADCAST
+Địa chỉ IP đầu vào: 192.168.10.25/24
+Biểu diễn phần Host (8 bit cuối): 11111111 (Tất cả bit Host = 1 255)
+Địa chỉ Broadcast tương ứng của mạng này sẽ là: 192.168.10.255
+
+=== PAGE 8 ===
+Địa chỉ Host Host Address)
+Là những địa chỉ IP hợp lệ có thể được gán trực tiếp cho các thiết bị cuối hoặc các interface mạng trong cùng phân
+đoạn.
+VÍ DỤ PHÂN BỔ ĐỊA CHỈ TRONG MẠNG /24 NETWORK 192.168.10.0/24
+NETWORK ADDRESS DẢI ĐỊA CHỈ HOST KHẢ DỤNG 254 HOSTS BROADCAST ADDRESS
+192.168.10.0 192.168.10.255
+KHÔNG THỂ GÁN CHO HOST 192.168.10.1 KHÔNG THỂ GÁN CHO HOST
+ĐẾN
+192.168.10.254
+Địa chỉ đầu tiên của Địa chỉ cuối cùng của
+mạng. Dùng để định mạng. Dùng để gửi dữ
+danh toàn bộ phân đoạn ĐỊA CHỈ HỢP LỆ liệu đồng thời tới tất cả
+mạng. thiết bị trong mạng.
+Dải địa chỉ nằm kẹp giữa Network và
+Broadcast, gán trực tiếp cho Máy tính, Server,
+Router, Switch...
+
+=== PAGE 9 ===
+MẠNG MÁY TÍNH & ROUTING
+Default Gateway
+Default Gateway là địa chỉ của router hoặc interface đóng vai trò như cửa ngõ để gửi các packet ra khỏi
+subnet hiện tại đến các mạng khác.
+Host IP Address: 192.168.10.25/24
+Default Gateway: 192.168.10.1
+QUY TẮC BẮT BUỘC
+“Địa chỉ Default Gateway phải luôn nằm trong cùng một subnet với host
+đang sử dụng nó.ˮ
+
+=== PAGE 10 ===
+TRUYỀN THÔNG MẠNG COMMUNICATION
+Phân Loại Đích Đến: Local vs Remote Destination
+Trong quá trình truyền thông, đích đến (destination) được chia làm hai loại dựa trên vị trí địa chỉ so với thiết bị gửi:
+CÙNG SUBNET KHÁC SUBNET
+1. Local Destination 2. Remote Destination
+Đích đến nằm cùng mạng nội bộ (subnet) với thiết bị Đích đến nằm ngoài mạng nội bộ (khác subnet).
+gửi.
+HÀNH ĐỘNG CỦA THIẾT BỊ
+HÀNH ĐỘNG CỦA THIẾT BỊ Bắt buộc phải gửi frame đến Default Gateway.
+Gửi dữ liệu trực tiếp đến đích.
+Quy trình: Sau khi tiếp nhận, Router sẽ xử lý và tiếp tục
+Không cần thông qua các thiết bị định tuyến trung gian chuyển tiếp packet đến mạng đích.
+Router / Default Gateway).
+
+=== PAGE 11 ===
+MẠNG MÁY TÍNH  LỚP HOẠT ĐỘNG
+So sánh Địa chỉ IP và Địa chỉ MAC
+Địa chỉ IP Logical Address) Địa chỉ MAC Physical Address)
+Tầng 3 - Network Layer Tầng 2 - Data Link Layer
+• Bản chất: Là địa chỉ logic, dùng để định tuyến gói • Bản chất: Là địa chỉ vật lý, dùng để giao tiếp và
+tin end-to-end từ nguồn tới đích. chuyển tiếp dữ liệu nội bộ.
+• Phạm vi: Hoạt động trên toàn bộ mạng liên kết • Phạm vi: Chỉ có giá trị trong cùng một mạng cục
+Inter-network / Global). bộ Local / Link Delivery).
+• Tính biến đổi: Địa chỉ IP nguồn và đích thường • Tính biến đổi: Địa chỉ MAC nguồn và đích bị thay
+được giữ nguyên suốt quá trình truyền (nếu không đổi liên tục qua từng chặng (hop) khi qua Router.
+dùng NAT.
+SỰ PHỐI HỢP KHI TRUYỀN DỮ LIỆU
+Địa chỉ IP và MAC hoạt động ở hai tầng khác nhau nhưng phối hợp chặt chẽ. Khi một packet đi qua Router:
+Địa chỉ IP giúp giữ vững định hướng toàn cục từ nguồn đến đích cuối cùng, trong khi địa chỉ MAC liên tục cập nhật ở mỗi
+chặng (hop) để hoàn thành việc giao tiếp giữa các thiết bị kế cận.
+
+=== PAGE 12 ===
+MẠNG MÁY TÍNH TẦNG LIÊN KẾT DỮ LIỆU
+Giao Thức ARP Address Resolution Protocol)
+Vai Trò Của ARP
+Ánh xạ địa chỉ logic IPv4 sang địa chỉ vật lý MAC
+Address trong cùng một mạng cục bộ (local network).
+TRƯỜNG HỢP 1 CÙNG SUBNET
+Tìm MAC của Destination Host
+Nếu đích đến nằm trong cùng subnet, máy gửi sẽ gửi yêu
+cầu ARP để tìm trực tiếp địa chỉ MAC của chính máy đích đó.
+TRƯỜNG HỢP 2 KHÁC SUBNET
+Tìm MAC của Default Gateway
+SƠ ĐỒ HOẠT ĐỘNG ARP IN LOCAL NETWORK
+Nếu đích đến khác subnet, máy gửi sẽ dùng ARP để tìm địa
+Quy trình 2 bước: ARP Request Broadcast Bước 1 & ARP Reply Unicast
+chỉ MAC của Default Gateway Router để chuyển tiếp gói tin
+Bước 2
+đi xa hơn.
+MẠNG MÁY TÍNH ARP RESOLUTION
+
+=== PAGE 13 ===
+Mô Hình Tư Duy IPv4
+Để nắm vững IPv4, chúng ta cần một mô hình tư duy rõ ràng:
+Địa chỉ IP Đóng vai trò là địa chỉ logic xuyên suốt.
+Địa chỉ MAC Đảm nhiệm việc giao frame dữ liệu trên link vật lý hiện tại.
+Thiết bị Router: Đóng vai trò ra quyết định chọn trạm tiếp theo (next hop).
+Prefix hoặc Subnet Mask: Là công cụ để xác định ranh giới và phạm vi của một subnet.
+
+=== PAGE 14 ===
+Các Dải Địa Chỉ IPv4 Private RFC 1918
+Tổ chức IETF đã quy định các dải địa chỉ IPv4 Private thông qua tài liệu RFC 1918. Cụ thể, có 3 dải địa chỉ được dành riêng
+cho mục đích này bao gồm:
+DẢI 1 DẢI 2 DẢI 3
+10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+RFC 1918 Private Range RFC 1918 Private Range RFC 1918 Private Range
+Ứng Dụng Thực Tế
+Đây là những dải IP quen thuộc mà các bạn thường thấy khi kết nối vào Wi-Fi ở nhà, trường học hoặc các văn
+phòng công ty.
+
+=== PAGE 15 ===
+ĐẶC ĐIỂM MẠNG NỘI BỘ
+Đặc tính Địa chỉ IPv4 Private
+Sử dụng phổ biến trong mạng LAN
+Địa chỉ IPv4 Private được sử dụng vô cùng phổ biến trong các mạng nội bộ LAN.
+Không định tuyến trực tiếp trên Internet
+Đặc điểm quan trọng nhất là chúng không được phép định tuyến trực tiếp trên môi trường Internet công cộng.
+Khả năng tái sử dụng linh hoạt
+Nhờ tính chất này, các dải IP Private có thể được tái sử dụng thoải mái ở nhiều mạng độc lập khác nhau mà
+không sợ xung đột.
+Kết hợp kỹ thuật NAT
+Để truy cập Internet, các thiết bị dùng IP Private thường phải kết hợp với kỹ thuật NAT.
+
+=== PAGE 16 ===
+GIAO THỨC INTERNET IPv4
+Địa chỉ IPv4 Public
+KHÔNG GIAN MẠNG CÔNG CỘNG
+LƯU Ý QUAN TRỌNG
+Phạm vi & Quy chuẩn Phân bổ
+Ngoại lệ Gán Địa chỉ Host
+Trái ngược với Private, địa chỉ IPv4 Public được sử dụng trong
+không gian mạng Internet công cộng và tuân thủ nghiêm ngặt Cần lưu ý rằng, không phải mọi địa chỉ
+theo các chính sách phân bổ toàn cầu. nằm ngoài dải Private đều mặc nhiên có
+thể gán cho các host trên Internet (ví dụ
+như các dải IP dành cho Multicast).
+Tính Duy nhất Tuyệt đối
+Mỗi địa chỉ Public phải đảm bảo tính duy nhất tuyệt đối trên
+toàn bộ phạm vi Internet. Class D (Multicast Range)
+224.0.0.0 – 239.255.255.255
+RESERVED / NOT FOR HOSTS
+
+=== PAGE 17 ===
+SO SÁNH CỐT LÕI
+Tổng kết lại sự khác biệt
+TIÊU CHÍ IPV4 PRIVATE IPV4 PUBLIC
+Phạm vi Chỉ dùng trong mạng nội bộ. Dùng cho không gian Internet công
+cộng.
+Tính duy nhất Có thể trùng lặp giữa các tổ chức khác Phải là duy nhất toàn cầu.
+nhau.
+Truy cập & Quản lý Truy cập Internet: Thường xuyên cần Quản lý: Cần được phân bổ và quản lý
+sử dụng NAT. chặt chẽ.
+
+=== PAGE 18 ===
+Khái niệm NAT Network Address Translation)
+Chuyển đổi địa chỉ IP
+NAT Network Address Translation) là kỹ thuật thực
+hiện việc chuyển đổi địa chỉ IP qua lại giữa các không
+gian mạng khác nhau.
+● Ứng dụng phổ biến: Chuyển đổi từ địa chỉ
+Private IPv4 sang Public IPv4 để các thiết bị nội
+bộ có thể truy cập Internet.
+● Vị trí thực hiện: Quá trình chuyển đổi này
+thường được thực hiện trực tiếp tại các thiết bị
+mạng biên như Router hoặc Firewall của tổ
+chức.
+
+=== PAGE 19 ===
+QUY TRÌNH CHUYỂN ĐỔI ĐỊA CHỈ MẠNG NAT
+Luồng Chuyển Đổi Gói Tin Chi Tiết
+Biến đổi địa chỉ nguồn Private thành Public tại Gateway để giao tiếp trên Internet.
+MẠNG NỘI BỘ LAN THIẾT BỊ BIÊN GATEWAY INTERNET PUBLIC
+01 02 03
+1. Khởi Tạo Gói Tin 2. Tiến Hành NAT 3. Truyền Lên Internet
+PC nội bộ cần gửi dữ liệu ra Gateway 192.168.1.1) nhận gói tin Gói tin di chuyển hợp lệ trên
+Internet. Gói tin được tạo mang địa và thay thế IP nguồn Private bằng Internet và máy chủ bên ngoài có
+chỉ IP nguồn Private. IP Public của chính nó. thể phản hồi về địa chỉ Public này.
+THÔNG TIN GÓI TIN BẢNG CHUYỂN ĐỔI NAT GÓI TIN ĐỊNH TUYẾN
+IP Nguồn Private): IP Nguồn Cũ Private): IP Nguồn Hiện Tại:
+192.168.1.10 192.168.1.10 203.0.113.10
+IP Nguồn Mới Public
+IP Đích Gateway): Trạng Thái:
+203.0.113.10
+192.168.1.1 HỢP LỆ (ROUTABLE)
+
+=== PAGE 21 ===
+CHƯƠNG 4 TẦNG NETWORK SUBNETTING
+Khái Niệm & Giải Thích Chia Subnet
+Phân chia không gian địa chỉ IP lớn thành các vùng mạng con độc lập và tối ưu.
+KHÁI NIỆM CỐT LÕI BẢN CHẤT KỸ THUẬT
+01 02
+Subnetting La Gi? Cơ Chế Hoạt Động
+Subnetting (chia mạng con) là quá trình chia một mạng IP lớn thành Mượn các bit ở phần Host ID để mở rộng phần Network ID, tạo ra
+nhiều mạng con (subnet) nhỏ hơn về mặt kỹ thuật. Subnet Mask mới thay thế cho Subnet Mask mặc định.
+MÔ PHỎNG CHIA MẠNG CON CẤU TRÚC ĐỊA CHỈ IP (32-BIT)
+Mạng ban đầu Lớn Mặc định (Class C):
+192.168.1.0/24 (256 IP Host) [ Network ID: 24 bits ] [ Host ID: 8 bits ]
+Sau khi chia Subnet (/26): Khi chia Subnet (/26):
+Subnet A: 192.168.1.0/26 (64 IP) [ Network ID ] [ Subnet ID ] [ Host ID ]
+Subnet B: 192.168.1.64/26 (64 IP) <--- 24 bits ---><- 2 bits -><- 6 bits ->
+
+=== PAGE 22 ===
+QUẢN TRỊ VÀ THIẾT KẾ MẠNG CONTROL
+Tầm Quan Trọng Của Chia IP & Subnetting VLSM
+5 lý do kỹ thuật và vận hành cốt lõi bắt buộc phải phân hoạch mạng con trong hạ tầng.
+01 02 03
+Thu Nhỏ Broadcast Domain & Tiết Kiệm & Tối Ưu Hóa Địa Chỉ IP Tăng Cường Bảo Mật & Kiểm
+Tăng Hiệu Năng Soát
+Sử dụng VLSM để cấp phát không gian IP
+Giới hạn lưu lượng quảng bá trong phạm linh hoạt theo đúng nhu cầu thực tế, Dễ dàng áp dụng quy tắc Firewall, ACLs
+vi hẹp, giảm tải xử lý cho CPU của host tránh lãng phí tài nguyên IP. để kiểm soát luồng truy cập giữa các
+và tối ưu hóa băng thông mạng. vùng mạng con khác nhau.
+04 05
+Cô Lập & Khoanh Vùng Sự Cố Định Tuyến Phân Cấp & Thu Gọn
+Bảng Chuyển Tiếp
+Giới hạn sự cố mạng (như bão broadcast,
+xung đột IP, virus) trong một subnet mà Hỗ trợ gom tuyến Route Summarization),
+không ảnh hưởng toàn hệ thống. giúp giảm kích thước Routing Table và
+tăng tốc độ xử lý của Router.
+
+=== PAGE 23 ===
+TỐI ƯU HÓA HẠ TẦNG MẠNG CON
+Thu Nhỏ Broadcast Domain & Tăng Hiệu Năng
+Giải pháp cô lập lưu lượng quảng bá rác ARP/DHCP) để giải phóng băng thông và giảm tải CPU host.
+TRẠNG THÁI CHƯA PHÂN HOẠCH MÔ HÌNH TỐI ƯU HÓA VLSM
+01 02
+Không Chia Subnet Khi Chia Subnet
+Giao thức như ARP/DHCP phát gói tin Broadcast đến toàn bộ Gói tin Broadcast được khoanh vùng và cô lập hoàn toàn trong
+thiết bị trong mạng LAN, khiến mọi máy tính phải nhận và xử lý từng Subnet con, không ảnh hưởng đến các vùng mạng khác.
+lưu lượng rác.
+CẢNH BÁO TÁC ĐỘNG HỆ THỐNG LỢI ÍCH KỸ THUẬT ĐẠT ĐƯỢC
+Bão Quảng Bá Broadcast Storm): Dễ dàng xảy ra hiện tượng Cô Lập Phạm Vi: Giới hạn phạm vi ảnh hưởng của
+tràn ngập gói tin trên toàn mạng. Broadcast trong từng Subnet hẹp.
+Ảnh Hưởng CPU CPU của mọi Host bị ngắt quãng liên tục để Tăng Tốc Độ: Tăng tốc độ truyền tải dữ liệu và tối ưu hóa
+xử lý gói tin không mong muốn. hiệu năng tổng thể.
+Tắc Nghẽn Băng Thông: Lãng phí tài nguyên đường truyền Tiết Kiệm CPU: Giảm thiểu tần suất ngắt xử lý, giúp Host
+cho lưu lượng dư thừa. tập trung vào tác vụ chính.
+
+=== PAGE 24 ===
+QUẢN TRỊ VÀ THIẾT KẾ MẠNG CONTROL
+Tiết Kiệm & Tối Ưu Hóa Địa Chỉ IP
+Giải pháp khắc phục giới hạn nghiêm ngặt của không gian IPv4 bằng kỹ thuật phân hoạch linh hoạt VLSM.
+PHÂN LỚP TRUYỀN THỐNG CLASSFUL KỸ THUẬT PHÂN HOẠCH VLSM
+01 02
+Cấp Phát Cố Định & Lãng Phí Cắt Nhỏ Dải Mạng Linh Hoạt
+Không gian IPv4 có giới hạn nghiêm ngặt. Việc chia theo Class Kỹ thuật Subnet Mask độ dài linh hoạt VLSM) cho phép chia
+A, B, C) khiến việc cấp phát địa chỉ IP bị dư thừa lớn, không nhỏ không gian IP tối ưu sát nhất với nhu cầu thiết bị thực tế.
+phù hợp thực tế.
+HẠN CHẾ CỦA CLASSFUL VÍ DỤ ỨNG DỤNG THỰC TẾ
+Prefix /28 (16 IP):
+Cạn Kiệt Địa Chỉ: IPv4 mau chóng hết không gian khả dụng do
+Dành cho phòng máy 12 thiết bị (vừa đủ 12 Host +
+phân phối không đồng đều.
+Broadcast/Network/Gateway).
+Dư Thừa Cấp Phát: Mạng nhỏ buộc phải nhận Block lớn (e.g., Prefix /30 (4 IP):
+Class C 256 IP cho vài máy). Tối ưu cho đường kết nối Point-to-Point giữa 2 Router (chỉ cần 2 IP
+dùng được).
+Thiếu Linh Hoạt: Không thể chia nhỏ Subnet theo đúng nhu cầu
+quy mô từng phòng ban.
+
+=== PAGE 25 ===
+QUẢN TRỊ VÀ THIẾT KẾ MẠNG CONTROL
+Tăng Cường Bảo Mật & Kiểm Soát Truy Cập
+Giải pháp cô lập truy cập Layer 2 và bắt buộc kiểm duyệt luồng dữ liệu qua Router/Firewall.
+TRUYỀN TIN TRỰC TIẾP CÙNG SUBNET KHOANH VÙNG SUBNET & KIỂM SOÁT
+01 02
+Thiếu Kiểm Duyệt Ở Tầng 2 Bắt Buộc Định Tuyến Qua Gateway
+Các thiết bị trong cùng Subnet có thể truyền tin trực tiếp với Chia nhỏ Subnet buộc dữ liệu giữa các phòng ban phải đi qua
+nhau ở Tầng 2 Data Link) qua Switch mà không thông qua bất Router hoặc Firewall Default Gateway), tạo điểm kiểm soát
+kỳ cơ chế kiểm duyệt nào. tập trung.
+RỦI RO BẢO MẬT TẦNG 2 GIẢI PHÁP BẢO MẬT ĐẠT ĐƯỢC
+Không Có Kiểm Duyệt: Bỏ qua hoàn toàn các quy tắc kiểm soát Thiết Lập ACLs / Firewall:
+truy cập từ Firewall. Nhà quản trị dễ dàng áp dụng các luật bảo mật để chặn/cho phép
+lưu lượng.
+Nguy Cơ Lây Nhiễm: Mã độc hoặc sự cố dễ dàng lan rộng nội bộ
+giữa các máy tính. Bảo Vệ Dữ Liệu Nhạy Cảm:
+Ngăn chặn truy cập trái phép từ các phòng ban khác vào tài
+Khó Giám Sát: Lưu lượng truy cập trực tiếp không được ghi log
+nguyên quan trọng.
+trên Default Gateway.
+
+=== PAGE 26 ===
+QUẢN TRỊ VÀ THIẾT KẾ MẠNG CONTROL
+Cô Lập & Khoanh Vùng Xử Lý Sự Cố Fault Isolation)
+Giải pháp giới hạn phạm vi ảnh hưởng của sự cố kỹ thuật và tối ưu hóa khả năng ứng cứu hệ thống.
+SỰ CỐ NỘI BỘ PHẠM VI SUBNET PHẢN ỨNG VÀ XỬ LÝ SỰ CỐ
+01 02
+Tác Động Được Khoanh Vùng Xử Lý & Ngắt Kết Nối Nhanh Dóng
+Khi một máy tính bị nhiễm malware hoặc cạc mạng lỗi gây bão Quản trị viên dễ dàng phát hiện và ngắt kết nối khu vực bị sự
+tín hiệu, tác động tiêu cực chỉ bị khoanh vùng trong Subnet cố mà không làm gián đoạn toàn bộ hệ thống.
+đó.
+RỦI RO ĐƯỢC GIỚI HẠN GIẢI PHÁP VẬN HÀNH ĐẠT ĐƯỢC
+Malware Tấn Công: Mã độc lây nhiễm bị chặn lại ở ranh giới Phát Hiện Nhanh Chóng:
+Subnet, không thể tự do lan rộng. Dễ dàng khoanh vùng và định vị chính xác Subnet đang gặp sự cố.
+Bão Tín Hiệu Broadcast Storm): Lỗi cạc mạng NIC) chỉ ảnh Cách Ly Tức Thì:
+hưởng tới băng thông cục bộ. Ngắt kết nối khu vực lỗi tại Gateway mà vẫn duy trì tính liên tục
+của hệ thống.
+Bảo Vệ Toàn Hệ Thống: Các vùng mạng và phòng ban khác tiếp
+tục hoạt động bình thường.
+
+=== PAGE 27 ===
+QUẢN TRỊ VÀ THIẾT KẾ MẠNG CONTROL
+Định Tuyến Phân Cấp & Thu Gọn Routing Table
+Giải pháp tối ưu hóa hiệu năng Router và tiết kiệm bộ nhớ nhờ kỹ thuật tóm tắt địa chỉ đại diện Route Summarization).
+ĐỊNH TUYẾN PHẲNG FLAT ROUTING ĐỊNH TUYẾN PHÂN CẤP HIERARCHICAL ROUTING
+01 02
+Lưu Trữ Chi Tiết Từng Máy Lẻ Gom Tóm Tắt Theo Network Prefix
+Khi không phân cấp, Router phải ghi nhớ tuyến đường đến Subnet hỗ trợ nhóm nhiều Subnet nhỏ thành một địa chỉ đại
+từng IP riêng lẻ, dẫn đến Bảng định tuyến phình to quá mức. diện duy nhất, giúp tối ưu hóa Bảng định tuyến Routing
+Table).
+HẠN CHẾ CỦA BẢNG ĐỊNH TUYẾN LỚN LỢI ÍCH VẬN HÀNH ĐẠT ĐƯỢC
+Overload Bộ Nhớ: RAM Router bị tiêu tốn khổng lồ. Thu Gọn Routing Table: Lưu 1 Route đại diện dải mạng con.
+Tra Cứu Chậm Trễ: Độ trễ tăng cao do tìm kiếm nghìn Entry. Tăng Tốc Chuyển Tiếp: Tối ưu hóa tra cứu hướng đi.
+Ví dụ: Lưu 4 route 192.168.0.0/24 ➔ 192.168.3.0/24 tốn Ví dụ: 192.168.0.0/22 đại diện gom cả 4 subnet trên.
+4 Entry riêng biệt.
+
+=== PAGE 28 ===
+KIẾN TRÚC PHÂN LỚP BAN ĐẦU RFC 791  1981
+Cấu Trúc Địa Chỉ IPv4 Classful
+32-bit IP được chia cứng thành Phần Mạng Network Prefix) và Phần Máy Host ID) dựa trên các bit đầu tiên.
+A CLASS A (/8) B CLASS B (/16) C CLASS C (/24)
+Lớp A Mạng Cực Lớn Lớp B Mạng Trung Bình Lớp C Mạng Nhỏ
+• Bit bắt đầu: 0 • Bit bắt đầu: 10 • Bit bắt đầu: 110
+• 1 Octet Network / 3 Octet Host • 2 Octet Network / 2 Octet Host • 3 Octet Network / 1 Octet Host
+• Tối đa 128 mạng, 16M Host/mạng • Tối đa 16,384 mạng, 65k Host/mạng • Tối đa 2M+ mạng, 254 Host/mạng
+ĐỊNH DẠNG NHỊ PHÂN ĐỊNH DẠNG NHỊ PHÂN ĐỊNH DẠNG NHỊ PHÂN
+Prefix Bits 1st Octet): Prefix Bits 1st Octet): Prefix Bits 1st Octet):
+0xxxxxxx 10xxxxxx 110xxxxx
+Toàn bộ cấu trúc 32 bit Toàn bộ cấu trúc 32 bit Toàn bộ cấu trúc 32 bit
+0xxxxxxx.hhhhh.hhhhh.hhhhh 10xxxxxx.xxxxxxxx 110xxxxx.xxxx.xxxx
+.hhhhhhhh.hhhhhhhh .hhhhhhhh
+Mask: 255.0.0.0
+Mask: 255.255.0.0 Mask: 255.255.255.0
+
+=== PAGE 29 ===
+KIẾN TRÚC PHÂN LỚP BAN ĐẦU RFC 791  1981
+Bảng Phân Tích Chi Tiết Class A, B, C
+So sánh thông số kỹ thuật, định dạng bit và quy mô ứng dụng của các lớp địa chỉ IPv4.
+Đặc điểm Class A Lớp A Class B Lớp B Class C Lớp C
+Bit nhị phân đầu 0 10 110
+Dải Octet 1 Thập phân) 1 – 126 127 dành riêng) 128 – 191 192 – 223
+Phân chia Bit Net/Host) 8 bit Network / 24 bit Host 16 bit Network / 16 bit Host 24 bit Network / 8 bit Host
+Subnet Mask mặc định 255.0.0.0 (/8) 255.255.0.0 (/16) 255.255.255.0 (/24)
+Số lượng Mạng tối đa 126 mạng 16,384 mạng 2,097,152 mạng
+Số IP Host khả dụng / Mạng 224  2 ≈ 16.7 triệu IP 216  2 = 65,534 IP 28  2 = 254 IP
+Dành cho một số ít mạng quy mô Dành cho các tập đoàn, trường đại Dành cho các cơ quan, tổ chức quy
+Đối tượng áp dụng ban đầu
+siêu lớn học quy mô vừa mô nhỏ
+
+=== PAGE 30 ===
+SỰ TIẾN HÓA CỦA KIẾN TRÚC ĐỊNH TUYẾN IP
+Tại Sao Classful Bị Loại Bỏ & Thay Thế Bằng Classless CIDR?
+Cơ chế phân lớp cố định bộc lộ hạn chế chí mạng là gây lãng phí tài nguyên IP cực kỳ nghiêm trọng.
+HẠN CHẾ CHÍ MẠNG CLASSFUL GIẢI PHÁP THAY THẾ TOÀN DIỆN
+01 02
+Lãng Phí IP Nghiêm Trọng Subnetting & CIDR Classless)
+Một doanh nghiệp cần 500 IP: Nếu cấp 1 dải Class C 254 IP) thì không Subnetting RFC 950 Mở đường cắt nhỏ Class A/B/C thành các mạng
+đủ, nhưng nếu cấp 1 dải Class B 65,534 IP) thì sẽ lãng phí hơn 65,000 con nội bộ.
+IP. CIDR 1993 Loại bỏ hoàn toàn khái niệm Class A, B, C trên toàn
+Internet.
+CẠNH BÁO TÁC ĐỘNG TÀI NGUYÊN LỢI ÍCH KỸ THUẬT ĐẠT ĐƯỢC
+Khủng Hoảng Cạn Kiệt IP Các dải Class B bị xin hết sạch từ giữa Tiền Tố Linh Hoạt /k: Có thể đặt ở bất kỳ vị trí bit nào (như
+thập niên 1990. /20, /27, /30...).
+Phân Chia Cứng Nhắc: Không có cơ chế tùy chỉnh quy mô theo Cấp Phát Chính Xác: Cấp phát không gian IP vừa đủ theo đúng
+nhu cầu thực tế của tổ chức. nhu cầu sử dụng.
+Cấu Trúc Lớp: Bắt buộc tuân theo định dạng cố định Class A, B, C Tối Ưu Routing: Hỗ trợ gom tuyến linh hoạt, thu gọn bảng định
+ban đầu. tuyến toàn cầu.
+
+=== PAGE 31 ===
+ĐỊNH TUYẾN INTERNET / NETWORKING
+CIDR Classless Inter-Domain Routing)
+CIDR_PREFIX_NOTATION
+Định tuyến không phân lớp
+CIDR là phương pháp định tuyến không phân lớp. Thay vì
+VÍ DỤ ĐIỂN HÌNH PREFIX LENGTH
+sử dụng các lớp mạng A, B, C cố định và cứng nhắc, CIDR
+sử dụng Prefix Length để xác định mạng linh hoạt hơn.
+10.0.0.0/8
+Prefix 8 bits — Tương đương Class A
+172.16.0.0/12
+Prefix 12 bits — Linh hoạt (Non-Classful)
+Chia nhỏ Subnet linh hoạt
+Cơ chế này hỗ trợ đắc lực cho việc chia nhỏ 192.168.1.0/24
+subnet theo nhu cầu thực tế của hạ tầng mạng.
+Prefix 24 bits — Tương đương Class C
+> Ký hiệu /[Length] thay thế hoàn toàn Subnet
+Mask truyền thống.
+Gom đường Route Aggregation)
+Cho phép gom nhóm nhiều tuyến đường (route
+aggregation) hiệu quả, giảm kích thước bảng định
+tuyến.
+
+=== PAGE 32 ===
+KÝ HIỆU TIỀN TỐ PREFIX NOTATION
+Prefix Length Chi Tiết
+Prefix Length Chiều dài tiền tố) là gì?
+Là thông số cho biết chính xác có bao nhiêu bit được sử dụng làm phần Network trong một địa chỉ IP.
+Prefix Length được ký hiệu bằng dấu gạch chéo theo sau là một số n (/n), với n có giá trị từ 0 đến 32.
+Ví dụ: 192.168.1.0/24 Tổng số bit: 32 bit IPv4
+PHẦN NETWORK PHẦN HOST
+24 Bit 8 Bit
+Ký hiệu /24 xác định 24 bit đầu tiên dành riêng cho phần Network. 8 bit còn lại 32  24) được sử dụng để định danh các thiết bị Host.
+
+=== PAGE 33 ===
+BẢN CHẤT CỦA SUBNET MASK
+Cấu Trúc Bit & Quy Đổi Thập Phân
+Bản chất của Subnet Mask là một chuỗi 32 bit, trong đó tất cả các bit thuộc phần Network đều được bật
+thành 1, và tất cả các bit thuộc phần Host đều bị tắt thành 0. Việc quy đổi các chuỗi bit này ra số thập phân
+tạo thành các Subnet Mask quen thuộc.
+SUBNET_MASK_CONVERSION.SH
+/24 ➔ 11111111.11111111.11111111.00000000
+Tương đương: 255.255.255.0
+/16 ➔ 11111111.11111111.00000000.00000000
+Tương đương: 255.255.0.0
+/8 ➔ 11111111.00000000.00000000.00000000
+Tương đương: 255.0.0.0
+
+=== PAGE 34 ===
+GIỚI HẠN TOÁN HỌC TỐI ĐA BIT BOUNDARY
+Giới Hạn Prefix Length
+Không chấp nhận số âm hay thập phân như /24.5
+01 GIAO THỨC IPV4 02 GIAO THỨC IPV6
+Không Gian Địa Chỉ 32Bit Không Gian Địa Chỉ 128Bit
+Prefix length bắt buộc phải là số nguyên trong khoảng từ 0 Prefix length bắt buộc phải là số nguyên trong khoảng từ 0
+đến 32 (vì IPv4 dài đúng 32 bit). đến 128 (vì IPv6 dài đúng 128 bit).
+THÔNG TIN CẤU TRÚC IPV4 THÔNG TIN CẤU TRÚC IPV6
+Tổng độ dài cấu trúc: Tổng độ dài cấu trúc:
+32 Bits 128 Bits
+Khoảng giá trị Prefix hợp lệ: Khoảng giá trị Prefix hợp lệ:
+/0 đến /32 /0 đến /128
+Ví dụ hợp lệ: /0, /8, /16, /24, /27, /30, /32 Ví dụ: /48, /56, /64, /127, /128
+
+=== PAGE 35 ===
+Bảng Quy Đổi Prefix & Subnet Mask
+Dưới đây là bảng quy đổi cực kỳ quan trọng giữa Prefix và Subnet Mask mà các kỹ sư mạng cần ghi nhớ:
+PREFIX ↔ SUBNET MASK
+MỤC ĐÍCH SỬ DỤNG
+/24 ↔ 255.255.255.0
+Chia Mạng Con Subnetting)
+/25 ↔ 255.255.255.128 Bảng này giúp chuyển đổi nhanh chóng
+trong quá trình chia mạng con
+(subnetting).
+/26 ↔ 255.255.255.192
+QUY TẮC CIDR
+/27 ↔ 255.255.255.224
+Prefix (/N) = Số bit 1
+/28 ↔ 255.255.255.240 Subnet Mask = Dạng thập phân
+/29 ↔ 255.255.255.248
+/30 ↔ 255.255.255.252
+
+=== PAGE 36 ===
+Tính Toán Số Lượng Host Trong Mạng
+Để tính toán số lượng Host trong một mạng, ta áp dụng các công thức sau:
+CÔNG THỨC 1 CÔNG THỨC 2
+Số lượng Host bits Tổng số địa chỉ IP trong subnet
+Host bits = 32 − Prefix Tổng số IP = 2^(32−Prefix)
+CÔNG THỨC 3 QUAN TRỌNG LƯU Ý QUY TẮC TRỪ 2
+Số lượng Host usable Tại sao lại cần trừ đi 2?
+Host khả dụng để gán cho thiết bị) Ta phải trừ đi 2 vì cần loại bỏ địa chỉ Network và địa chỉ
+Broadcast ra khỏi dải IP khả dụng.
+Host usable = 2^(32−Prefix) − 2
+
+=== PAGE 37 ===
+BÀI TẬP THỰC HÀNH
+Thực Hành Tính Toán Subnetting
+YÊU CẦU TÍNH TOÁN DANH SÁCH PREFIX
+Hãy tính toán các thành phần sau cho mỗi /22
+Prefix:
+/24
+1. Network bits
+/26
+2. Host bits
+/27
+3. Subnet mask
+/30
+4. Tổng số địa chỉ IP
+5. Tổng số host usable
+
+=== PAGE 38 ===
+PHÂN TÍCH TIỀN TỐ MẠNG
+Chi Tiết Mạng với Prefix /22
+BIT PHÂN BỔ 32 BITS TOTAL
+SUBNET MASK THẬP PHÂN
+Network Bits: 22
+255.255.252.0
+Host Bits: 10
+Dạng nhị phân: 11111111.11111111.11111100.00000000
+Công thức: 32  22  10 Host bits còn lại
+SỐ LƯỢNG HOST USABLE
+TỔNG SỐ ĐỊA CHỈ
+1.022
+1.024
+Hosts khả dụng
+Địa chỉ
+Tính toán: 1024 - 2 = 1022 (loại trừ
+Tính toán: 2¹⁰ = 1.024
+Network & Broadcast)
+
+=== PAGE 39 ===
+PHÂN TÍCH TIỀN TỐ MẠNG
+Chi Tiết Mạng với Prefix /24
+BIT PHÂN BỔ 32 BITS TOTAL
+SUBNET MASK THẬP PHÂN
+Network Bits: 24
+255.255.255.0
+Host Bits: 8
+Dạng nhị phân: 11111111.11111111.11111111.00000000
+Công thức: 32  24  8 Host bits còn lại
+SỐ LƯỢNG HOST USABLE
+TỔNG SỐ ĐỊA CHỈ
+254
+256
+Hosts khả dụng
+Địa chỉ
+Tính toán: 256 - 2 = 254 (loại trừ Network
+Tính toán: 2⁸ = 256
+& Broadcast)
+
+=== PAGE 40 ===
+PHÂN TÍCH TIỀN TỐ MẠNG
+Chi Tiết Mạng với Prefix /26
+BIT PHÂN BỔ 32 BITS TOTAL
+SUBNET MASK THẬP PHÂN
+Network Bits: 26
+255.255.255.192
+Host Bits: 6
+Dạng nhị phân: 11111111.11111111.11111111.11000000
+Công thức: 32  26  6 Host bits còn lại
+SỐ LƯỢNG HOST USABLE
+TỔNG SỐ ĐỊA CHỈ
+62
+64
+Hosts khả dụng
+Địa chỉ
+Tính toán: 64 - 2 = 62 (loại trừ Network &
+Tính toán: 26 = 64
+Broadcast)
+
+=== PAGE 41 ===
+PHÂN TÍCH TIỀN TỐ MẠNG
+Chi Tiết Mạng với Prefix /27
+BIT PHÂN BỔ 32 BITS TOTAL
+SUBNET MASK THẬP PHÂN
+Network Bits: 27
+255.255.255.224
+Host Bits: 5
+Dạng nhị phân: 11111111.11111111.11111111.11100000
+Công thức: 32  27  5 Host bits còn lại
+SỐ LƯỢNG HOST USABLE
+TỔNG SỐ ĐỊA CHỈ
+30
+32
+Hosts khả dụng
+Địa chỉ
+Tính toán: 32 - 2 = 30 (loại trừ Network &
+Tính toán: 2⁵ = 32
+Broadcast)
+
+=== PAGE 42 ===
+PHÂN TÍCH TIỀN TỐ MẠNG
+Chi Tiết Mạng với Prefix /30
+BIT PHÂN BỔ 32 BITS TOTAL
+SUBNET MASK THẬP PHÂN
+Network Bits: 30
+255.255.255.252
+Host Bits: 2
+Dạng nhị phân: 11111111.11111111.11111111.11111100
+Công thức: 32  30  2 Host bits còn lại
+SỐ LƯỢNG HOST USABLE
+TỔNG SỐ ĐỊA CHỈ
+2
+4
+Hosts khả dụng
+Địa chỉ
+Tính toán: 4 - 2 = 2 (loại trừ Network &
+Tính toán: 2² = 4
+Broadcast)
+
+=== PAGE 43 ===
+CÔNG THỨC & VÍ DỤ TÍNH TOÁN
+Phương Pháp Tính Block Size Bước Nhảy)
+Phương pháp tính Block Size (bước nhảy) giúp xác định nhanh khoảng cách giữa các subnet kế tiếp nhau:
+Block Size = 256 − giá trị Subnet Mask thay đổi
+VÍ DỤ TÍNH TOÁN (/26) DANH SÁCH SUBNET TUẦN TỰ
+Lấy ví dụ với Prefix /26 có Subnet Mask kết thúc bằng Dựa vào bước nhảy 64, ta dễ dàng liệt kê các subnet:
+.192:
+CÔNG THỨC ÁP DỤNG
+.0 .64
+Block Size = 256 − 192 = 64
+Dải: .0 - .63 Dải: .64 - .127
+Bước nhảy xác định khoảng cách giữa các địa chỉ
+Subnet kế tiếp nhau là 64.
+.128 .192
+Dải: .128 - .191 Dải: .192 - .255
+
+=== PAGE 44 ===
+CÔNG THỨC & VÍ DỤ TÍNH TOÁN
+Phương Pháp Tính Block Size Bước Nhảy)
+Phương pháp tính Block Size (bước nhảy) giúp xác định nhanh khoảng cách giữa các subnet kế tiếp nhau:
+Block Size = 256 − giá trị Subnet Mask thay đổi
+VÍ DỤ TÍNH TOÁN (/26) DANH SÁCH SUBNET TUẦN TỰ
+Lấy ví dụ với Prefix /22 có Subnet Mask kết thúc bằng Dựa vào bước nhảy 4, ta dễ dàng liệt kê các subnet:
+.252:
+CÔNG THỨC ÁP DỤNG
+.0.0 .4.0
+Block Size = 256 − 252 = 4
+Dải: .0.0 - .3.255 Dải: .4.0 - .7.255
+Bước nhảy xác định khoảng cách giữa các địa chỉ
+Subnet kế tiếp nhau là 4.
+.8.0
+……
+Dải: .8.0 - .11.255
+
+=== PAGE 45 ===
+XÁC ĐỊNH SUBNET CỦA IP ADDRESS
+Bài Tập Xác Định Thông Số Subnet
+ĐỀ BÀI YÊU CẦU
+Cho địa chỉ IP 192.168.10.130/26, hãy xác định các yếu tố sau:
+YÊU CẦU 01 YÊU CẦU 02
+Subnet Mask Thuộc Subnet Nào
+Xác định giá trị Subnet Mask dạng thập phân từ Prefix Xác định khoảng dải IP phân hoạch và vị trí subnet chứa
+length /26. IP mẫu.
+YÊU CẦU 03 YÊU CẦU 04
+Network & Broadcast Số Host Usable
+Tìm địa chỉ Mạng Network address) và Quảng bá Tính tổng số lượng địa chỉ IP khả dụng gán cho thiết bị
+Broadcast address). trong subnet.
+
+=== PAGE 46 ===
+XÁC ĐỊNH SUBNET CỦA IP ADDRESS
+IP 192.168.10.130/26 Thuộc Subnet Nào?
+1. Sử dụng Block Size = 64, liệt kê các subnet khả thi:
+192.168.10.0/26 192.168.10.64/26 192.168.10.128/26 192.168.10.192/26
+Dải: .0 - .63 Dải: .64 - .127 Chứa IP .130 ✓ Dải: .192 - .255
+2. So sánh giá trị Octet cuối cùng 130
+128 < 130 < 192
+Giá trị octet cuối cùng của IP là 130. So sánh với các mốc subnet, ta thấy 130 lớn hơn 128 và nhỏ hơn 192.
+KẾT LUẬN CHÍNH XÁC
+Do đó, địa chỉ IP 192.168.10.130/26 chắc chắn thuộc về subnet 192.168.10.128/26.
+
+=== PAGE 47 ===
+Thông Số Mạng Subnet 192.168.10.128/26
+Tiếp tục với IP 192.168.10.130/26 thuộc subnet 192.168.10.128/26, ta có thể suy ra các thông số quan trọng của mạng
+này:
+NETWORK ADDRESS DẢI HOST KHẢ DỤNG BROADCAST ADDRESS
+192.168.10.128 192.168.10.129 192.168.10.191
+– 192.168.10.190
+Địa chỉ mạng chính thức. Là địa chỉ Địa chỉ quảng bá. Là IP cuối cùng
+IP đầu tiên của subnet này. Dải địa chỉ nằm ở giữa, gán cho các trước khi sang subnet tiếp theo
+thiết bị host trong mạng. (.192).
+SƠ ĐỒ TRỰC QUAN KHÔNG GIAN ĐỊA CHỈ IP SUBNET /26
+NETWORK 62 HOST KHẢ DỤNG BROADCAST KẾ TIẾP
+.128 192.168.10.129 ◀── Chứa IP mẫu .130 ──▶ 192.168.10.190 .191 .192
+• Network: 192.168.10.128 • Dải Host: 192.168.10.129 đến 192.168.10.190 • Broadcast: 192.168.10.191
+
